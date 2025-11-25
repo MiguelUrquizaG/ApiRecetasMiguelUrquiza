@@ -25,7 +25,7 @@ public class Ingrediente {
     private String nombre;
 
     @ManyToOne
-    List<Receta> listaRecetas;
+    List<Receta> composicion;
 
     @Override
     public final boolean equals(Object o) {

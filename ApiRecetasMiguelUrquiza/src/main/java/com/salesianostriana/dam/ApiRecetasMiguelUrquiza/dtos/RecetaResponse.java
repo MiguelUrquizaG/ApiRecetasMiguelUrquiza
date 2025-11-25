@@ -1,6 +1,6 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos;
 
-import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.enums.dificultad;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Dificultad;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Categoria;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Ingrediente;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Receta;
@@ -11,7 +11,7 @@ public record RecetaResponse(
         Long id,
         String nombre,
         int tiempoPreparacionMin,
-        dificultad dificultad,
+        Dificultad dificultad,
         Categoria categoria,
         List<Ingrediente> listaIngredientes
 ) {

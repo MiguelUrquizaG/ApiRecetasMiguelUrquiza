@@ -13,7 +13,7 @@ public record EditIngredienteCmd(
     public Ingrediente toEntity (EditIngredienteCmd cmd){
         return Ingrediente.builder()
                 .nombre(cmd.nombre)
-                .listaRecetas(cmd.listaRecetas)
+                .composicion(cmd.listaRecetas)
                 .build();
     }
 }

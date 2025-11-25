@@ -8,14 +8,14 @@ import java.util.List;
 public record IngredienteResponse(
         Long id,
         String nombre,
-        List<Receta> listaRecetas
+        List<Receta> composicion
 ) {
 
     public IngredienteResponse of(Ingrediente ingrediente){
         return new IngredienteResponse(
                 ingrediente.getId(),
                 ingrediente.getNombre(),
-                ingrediente.getListaRecetas()
+                ingrediente.getComposicion()
         );
     }
 }

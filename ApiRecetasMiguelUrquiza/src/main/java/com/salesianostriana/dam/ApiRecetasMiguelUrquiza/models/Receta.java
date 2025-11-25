@@ -1,6 +1,5 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models;
 
-import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.enums.dificultad;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -23,7 +22,7 @@ public class Receta {
     private String nombre;
     private int tiempoPreparacionMin;
     @Enumerated(EnumType.STRING)
-    private dificultad dificultad;
+    private Dificultad dificultad;
 
     @OneToMany
     private Categoria categoria;
