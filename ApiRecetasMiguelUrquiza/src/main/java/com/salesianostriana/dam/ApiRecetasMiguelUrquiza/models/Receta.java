@@ -28,7 +28,7 @@ public class Receta {
     private Categoria categoria;
 
     @OneToMany
-    private List<Ingrediente> listaIngredientes;
+    private List<IngredientesReceta> ingredientesRecetas;
 
     @Override
     public final boolean equals(Object o) {

@@ -1,19 +1,20 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos;
 
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Ingrediente;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.IngredientesReceta;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Receta;
 
 import java.util.List;
 
 public record EditIngredienteCmd(
         String nombre,
-        List<Receta> listaRecetas
+        List<IngredientesReceta> ingredientesRecetas
 ) {
 
     public Ingrediente toEntity (EditIngredienteCmd cmd){
         return Ingrediente.builder()
                 .nombre(cmd.nombre)
-                .composicion(cmd.listaRecetas)
+                .ingredientesRecetas(cmd.ingredientesRecetas)
                 .build();
     }
 }

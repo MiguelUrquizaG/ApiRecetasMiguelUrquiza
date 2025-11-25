@@ -46,8 +46,11 @@ public class CategoriaService {
                 }).orElseThrow(() -> new CategoriaNotFoundException(id));
     }
 
-    public void deleteById(Long id){
 
+    public void deleteById(Long id){
+        Categoria c = categoriaRepository.findById(id).orElseThrow(() -> new CategoriaNotFoundException("No se encuentra la categoría para eliminarla"));
+
+        categoriaRepository.deleteById(id);
     }
 
 

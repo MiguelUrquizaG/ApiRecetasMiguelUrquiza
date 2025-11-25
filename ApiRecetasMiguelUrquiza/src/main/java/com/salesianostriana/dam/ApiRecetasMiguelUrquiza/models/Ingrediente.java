@@ -22,7 +22,7 @@ public class Ingrediente {
     private String nombre;
 
     @OneToMany
-    List<Receta> composicion;
+    List<IngredientesReceta> ingredientesRecetas;
 
     @Override
     public final boolean equals(Object o) {
