@@ -14,7 +14,7 @@ public record IngredienteRecetaCmd(
         TipoUnidad unidad
 ) {
 
-    public IngredientesReceta toEntity(){
+    public IngredientesReceta toEntity(IngredienteRecetaCmd cmd){
         return IngredientesReceta.builder()
                 .cantidad(cantidad)
                 .ingrediente(ingrediente)

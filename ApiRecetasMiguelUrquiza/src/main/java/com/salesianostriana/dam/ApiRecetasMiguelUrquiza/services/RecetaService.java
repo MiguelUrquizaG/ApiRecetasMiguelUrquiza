@@ -1,9 +1,14 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services;
 
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.EditRecetaCmd;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.IngredienteRecetaCmd;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.CategoriaNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.RecetaNotFoundException;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Ingrediente;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.IngredientesReceta;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Receta;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.TipoUnidad;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.respositories.IngredienteRecetaRepository;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.respositories.RecetaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +23,8 @@ public class RecetaService {
 
     private final RecetaRepository recetaRepository;
     private final CategoriaService categoriaService;
+    private final IngredienteService ingredienteService;
+    private final IngredienteRecetaService ingredienteRecetaService;
 
 
 
@@ -59,6 +66,17 @@ public class RecetaService {
 
     public void deleteById(Long id){
         Receta receta = recetaRepository.findById(id).orElseThrow(() -> new RecetaNotFoundException("No se ha encontrado la receta que desea eliminar"));
+    }
+
+    public Receta addIngredienteToReceta(Long idReceta, Long idIngrediente, int cantidad, TipoUnidad tipoUnidad){
+
+        Receta receta = recetaRepository.findById(idReceta).orElseThrow(() -> new RecetaNotFoundException(idReceta));
+        Ingrediente ingrediente = ingredienteService.getById(idIngrediente);
+        IngredienteRecetaCmd cmd  = new IngredienteRecetaCmd(cantidad,ingrediente,receta,tipoUnidad);
+        ingredienteRecetaService.save(cmd);
+
+        return receta;
+
     }
 
 }
