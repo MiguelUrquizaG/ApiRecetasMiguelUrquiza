@@ -1,9 +1,6 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -26,7 +23,7 @@ public class Categoria {
     private String nombre;
     private String descripcion;
 
-    @ManyToOne
+    @OneToMany
     private List<Receta> listaRecetas;
 
     @Override

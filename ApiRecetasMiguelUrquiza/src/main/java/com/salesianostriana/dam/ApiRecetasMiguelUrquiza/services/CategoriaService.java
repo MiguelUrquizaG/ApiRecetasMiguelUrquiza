@@ -1,5 +1,7 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services;
 
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.EditCategoriaCmd;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.CategoriaNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Categoria;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.respositories.CategoriaRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,13 +21,34 @@ public class CategoriaService {
       List<Categoria> list = categoriaRepository.findAll();
 
       if(list.isEmpty()){
-          throw null;
+          throw new CategoriaNotFoundException();
       }
 
       return list;
 
     }
 
+    public Categoria getById(Long id){
+        return categoriaRepository.findById(id).orElseThrow(() -> new CategoriaNotFoundException(id));
+    }
+
+    public Categoria save(EditCategoriaCmd cmd){
+        return categoriaRepository.save(cmd.toEntity(cmd));
+    }
+
+    public Categoria edit(EditCategoriaCmd cmd,Long id){
+        return categoriaRepository.findById(id)
+                .map(categoria -> {
+                    categoria.setNombre(cmd.nombre());
+                    categoria.setDescripcion(cmd.descripcion());
+                    categoria.setListaRecetas(cmd.listaRecetas());
+                    return categoriaRepository.save(categoria);
+                }).orElseThrow(() -> new CategoriaNotFoundException(id));
+    }
+
+    public void deleteById(Long id){
+
+    }
 
 
 }

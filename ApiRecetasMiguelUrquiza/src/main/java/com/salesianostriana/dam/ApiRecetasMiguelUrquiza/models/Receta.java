@@ -24,10 +24,10 @@ public class Receta {
     @Enumerated(EnumType.STRING)
     private Dificultad dificultad;
 
-    @OneToMany
+    @ManyToOne
     private Categoria categoria;
 
-    @ManyToOne
+    @OneToMany
     private List<Ingrediente> listaIngredientes;
 
     @Override

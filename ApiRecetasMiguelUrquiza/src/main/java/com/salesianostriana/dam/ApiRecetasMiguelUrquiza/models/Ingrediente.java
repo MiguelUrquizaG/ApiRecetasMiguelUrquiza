@@ -1,9 +1,6 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -24,7 +21,7 @@ public class Ingrediente {
 
     private String nombre;
 
-    @ManyToOne
+    @OneToMany
     List<Receta> composicion;
 
     @Override
