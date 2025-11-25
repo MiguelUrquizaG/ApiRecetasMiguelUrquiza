@@ -13,7 +13,7 @@ public record RecetaResponse(
         int tiempoPreparacionMin,
         Dificultad dificultad,
         Categoria categoria,
-        List<Ingrediente> listaIngredientes
+        List<IngredienteResponse> listaIngredientes
 ) {
 
     public RecetaResponse of (Receta receta){
@@ -23,7 +23,7 @@ public record RecetaResponse(
                 receta.getTiempoPreparacionMin(),
                 receta.getDificultad(),
                 receta.getCategoria(),
-                receta.getListaIngredientes()
+                listaIngredientes()
         );
     }
 }
