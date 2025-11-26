@@ -5,10 +5,13 @@ import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente_receta.
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.CategoriaNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.RecetaNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.*;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.respositories.IngredienteRecetaRepository;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.respositories.RecetaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,7 +21,8 @@ public class RecetaService {
     private final RecetaRepository recetaRepository;
     private final CategoriaService categoriaService;
     private final IngredienteService ingredienteService;
-    private final IngredienteRecetaService ingredienteRecetaService;
+    @Lazy
+    private final IngredienteRecetaRepository ingredienteRecetaRepository;
 
 
     public List<Receta> getAll() {
@@ -44,16 +48,17 @@ public class RecetaService {
         try {
             categoria = categoriaService.getById(cmd.idCategoria());
         } catch (CategoriaNotFoundException ex) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("No funciona");
         }
 
 
-        return Receta.builder()
+        return recetaRepository.save(Receta.builder()
                 .nombre(cmd.nombre())
                 .tiempoPreparacionMin(cmd.tiempoPreparacionMin())
                 .dificultad(cmd.dificultad())
                 .categoria(categoria)
-                .build();
+                .ingredientesRecetas(new ArrayList<IngredientesReceta>())
+                .build());
     }
 
     public Receta edit(EditRecetaCmd cmd, Long id) {
@@ -72,15 +77,23 @@ public class RecetaService {
 
     public void deleteById(Long id) {
         Receta receta = recetaRepository.findById(id).orElseThrow(() -> new RecetaNotFoundException("No se ha encontrado la receta que desea eliminar"));
+
+        recetaRepository.deleteById(id);
     }
 
 
-    public Receta addIngredienteToReceta(IngredienteRecetaCmd cmd) {
+    public Receta addIngredienteToReceta(IngredienteRecetaCmd cmd, Long idReceta) {
 
-        Receta receta = recetaRepository.findById(cmd.idReceta()).orElseThrow(() -> new RecetaNotFoundException(cmd.idReceta()));
+        Receta receta = recetaRepository.findById(idReceta).orElseThrow(() -> new RecetaNotFoundException(idReceta));
         Ingrediente ingrediente = ingredienteService.getById(cmd.idIngrediente());
-        IngredienteRecetaCmd newCmd = new IngredienteRecetaCmd(cmd.cantidad(), ingrediente.getId(), receta.getId(), cmd.unidad());
-        ingredienteRecetaService.save(newCmd);
+        IngredienteRecetaCmd newCmd = new IngredienteRecetaCmd(cmd.cantidad(), ingrediente.getId(), idReceta, cmd.unidad());
+
+        ingredienteRecetaRepository.save(IngredientesReceta.builder()
+                .receta(receta)
+                .ingrediente(ingrediente)
+                .unidad(cmd.unidad())
+                .cantidad(cmd.cantidad())
+                .build());
 
         return receta;
 

@@ -2,6 +2,9 @@ package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.categoria;
 
 
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Categoria;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Receta;
+
+import java.util.ArrayList;
 
 public record EditCategoriaCmd(
 
@@ -13,7 +16,7 @@ public record EditCategoriaCmd(
         return  Categoria.builder()
                 .nombre(cmd.nombre)
                 .descripcion(cmd.descripcion)
-
+                .listaRecetas(new ArrayList<Receta>())
                 .build();
     }
 }

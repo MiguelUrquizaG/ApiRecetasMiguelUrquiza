@@ -12,7 +12,7 @@ public record IngredienteResponse(
         List<IngredienteRecetaResponse> ingredientesRecetas
 ) {
 
-    public IngredienteResponse of(Ingrediente ingrediente){
+    public static IngredienteResponse of(Ingrediente ingrediente){
         return new IngredienteResponse(
                 ingrediente.getId(),
                 ingrediente.getNombre(),
