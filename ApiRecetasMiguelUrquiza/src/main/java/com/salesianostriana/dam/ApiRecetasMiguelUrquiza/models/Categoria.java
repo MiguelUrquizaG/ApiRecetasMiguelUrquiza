@@ -24,7 +24,7 @@ public class Categoria {
     private String descripcion;
 
     //Fetching y mappedBy
-    @OneToMany
+    @OneToMany(mappedBy = "categoria",fetch = FetchType.EAGER)
     private List<Receta> listaRecetas;
 
     @Override

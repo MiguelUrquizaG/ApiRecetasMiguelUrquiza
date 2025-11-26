@@ -25,9 +25,10 @@ public class Receta {
     private Dificultad dificultad;
 
     @ManyToOne
+    @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
-    @OneToMany
+    @OneToMany(mappedBy = "receta",fetch = FetchType.EAGER)
     private List<IngredientesReceta> ingredientesRecetas;
 
     @Override

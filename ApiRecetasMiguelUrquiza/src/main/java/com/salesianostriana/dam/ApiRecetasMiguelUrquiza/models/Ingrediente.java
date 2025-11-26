@@ -21,7 +21,7 @@ public class Ingrediente {
 
     private String nombre;
 
-    @OneToMany
+    @OneToMany(mappedBy = "ingrediente",fetch = FetchType.EAGER)
     List<IngredientesReceta> ingredientesRecetas;
 
     @Override
