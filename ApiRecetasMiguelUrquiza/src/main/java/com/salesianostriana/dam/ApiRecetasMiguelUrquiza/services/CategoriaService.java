@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Service
-@RequestMapping("/categoria")
 @RequiredArgsConstructor
 public class CategoriaService {
 
@@ -41,7 +40,6 @@ public class CategoriaService {
                 .map(categoria -> {
                     categoria.setNombre(cmd.nombre());
                     categoria.setDescripcion(cmd.descripcion());
-                    categoria.setListaRecetas(cmd.listaRecetas());
                     return categoriaRepository.save(categoria);
                 }).orElseThrow(() -> new CategoriaNotFoundException(id));
     }

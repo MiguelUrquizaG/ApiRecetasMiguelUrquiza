@@ -9,18 +9,18 @@ import jakarta.persistence.ManyToOne;
 public record IngredienteRecetaCmd(
 
         int cantidad,
-        Ingrediente ingrediente,
-        Receta receta,
+        Long idIngrediente,
+        Long  idReceta,
         TipoUnidad unidad
 ) {
 
-    public IngredientesReceta toEntity(IngredienteRecetaCmd cmd){
+   /*public IngredientesReceta toEntity(IngredienteRecetaCmd cmd){
         return IngredientesReceta.builder()
                 .cantidad(cantidad)
                 .ingrediente(ingrediente)
                 .receta(receta)
                 .unidad(unidad)
                 .build();
-    }
+    }*/
 
 }

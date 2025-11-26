@@ -7,14 +7,12 @@ import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Receta;
 import java.util.List;
 
 public record EditIngredienteCmd(
-        String nombre,
-        List<IngredientesReceta> ingredientesRecetas
+        String nombre
 ) {
 
     public Ingrediente toEntity (EditIngredienteCmd cmd){
         return Ingrediente.builder()
                 .nombre(cmd.nombre)
-                .ingredientesRecetas(cmd.ingredientesRecetas)
                 .build();
     }
 }

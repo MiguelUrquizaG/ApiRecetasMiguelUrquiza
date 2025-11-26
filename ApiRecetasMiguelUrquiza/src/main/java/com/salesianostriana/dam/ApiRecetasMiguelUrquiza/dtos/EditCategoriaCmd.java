@@ -10,14 +10,14 @@ import java.util.List;
 public record EditCategoriaCmd(
 
          String nombre,
-         String descripcion,
-         List<Receta>listaRecetas
+         String descripcion
+
 ) {
     public Categoria toEntity(EditCategoriaCmd cmd){
         return  Categoria.builder()
                 .nombre(cmd.nombre)
                 .descripcion(cmd.descripcion)
-                .listaRecetas(listaRecetas)
+
                 .build();
     }
 }

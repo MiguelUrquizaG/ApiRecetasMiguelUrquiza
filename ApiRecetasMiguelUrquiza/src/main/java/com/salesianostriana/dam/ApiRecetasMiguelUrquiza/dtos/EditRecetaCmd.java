@@ -9,17 +9,16 @@ public record EditRecetaCmd(
         String nombre,
         int tiempoPreparacionMin,
         Dificultad dificultad,
-        Categoria categoria,
-        List<IngredientesReceta>ingredientesRecetas
+        Long idCategoria
 ) {
 
-    public Receta toEntity (EditRecetaCmd cmd){
+    /*public Receta toEntity (EditRecetaCmd cmd){
         return Receta.builder()
                 .nombre(cmd.nombre)
                 .tiempoPreparacionMin(cmd.tiempoPreparacionMin)
                 .dificultad(cmd.dificultad)
-                .categoria(cmd.categoria)
+                .categoria(cmd.idCategoria.)
                 .ingredientesRecetas(cmd.ingredientesRecetas)
                 .build();
-    }
+    }*/
 }

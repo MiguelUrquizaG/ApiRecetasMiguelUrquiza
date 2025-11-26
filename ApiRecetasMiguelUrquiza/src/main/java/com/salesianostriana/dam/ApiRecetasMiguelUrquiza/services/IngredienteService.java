@@ -13,7 +13,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@RequestMapping("/ingredientes")
 public class IngredienteService {
 
     private final IngredienteRespository ingredienteRespository;
@@ -41,7 +40,6 @@ public class IngredienteService {
         return ingredienteRespository.findById(id)
                 .map(ingrediente -> {
                     ingrediente.setNombre(cmd.nombre());
-                    ingrediente.setIngredientesRecetas(cmd.ingredientesRecetas());
                     return ingrediente;
                 }).orElseThrow(() -> new IngredienteNotFoundException(id));
     }

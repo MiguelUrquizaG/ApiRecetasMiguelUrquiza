@@ -10,7 +10,7 @@ public record RecetaResponse(
         int tiempoPreparacionMin,
         Dificultad dificultad,
         Categoria categoria,
-        List<IngredientesReceta> listaIngredientes
+        List<IngredienteRecetaResponse> listaIngredientes
 ) {
 
     public RecetaResponse of (Receta receta){
