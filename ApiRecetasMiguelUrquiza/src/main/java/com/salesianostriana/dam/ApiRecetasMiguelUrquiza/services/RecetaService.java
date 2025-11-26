@@ -74,17 +74,16 @@ public class RecetaService {
         Receta receta = recetaRepository.findById(id).orElseThrow(() -> new RecetaNotFoundException("No se ha encontrado la receta que desea eliminar"));
     }
 
-    /*
-    public Receta addIngredienteToReceta(IngredienteRecetaCmd cmd){
-        //Arreglar ids de busqueda
 
-        Receta receta = recetaRepository.findById(idReceta).orElseThrow(() -> new RecetaNotFoundException(idReceta));
-        Ingrediente ingrediente = ingredienteService.getById(idIngrediente);
-        IngredienteRecetaCmd cmd  = new IngredienteRecetaCmd(cantidad,ingrediente.getId(),receta.getId(),tipoUnidad);
-        ingredienteRecetaService.save(cmd);
+    public Receta addIngredienteToReceta(IngredienteRecetaCmd cmd){
+
+        Receta receta = recetaRepository.findById(cmd.idReceta()).orElseThrow(() -> new RecetaNotFoundException(cmd.idReceta()));
+        Ingrediente ingrediente = ingredienteService.getById(cmd.idIngrediente());
+        IngredienteRecetaCmd newCmd  = new IngredienteRecetaCmd(cmd.cantidad(),ingrediente.getId(),receta.getId(),cmd.unidad());
+        ingredienteRecetaService.save(newCmd);
 
         return receta;
 
-    }*/
+    }
 
 }
