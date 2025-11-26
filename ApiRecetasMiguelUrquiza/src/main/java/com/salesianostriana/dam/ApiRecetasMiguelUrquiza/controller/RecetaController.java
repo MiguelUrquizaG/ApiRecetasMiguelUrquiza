@@ -55,7 +55,7 @@ public class RecetaController {
     }
 
     @PostMapping("/{id}/ingredientes")
-    public ResponseEntity<RecetaResponse>addIngredienteToReceta(@PathVariable Long id, IngredienteRecetaCmd cmd){
+    public ResponseEntity<RecetaResponse>addIngredienteToReceta(@PathVariable Long id, @RequestBody IngredienteRecetaCmd cmd){
 
         return ResponseEntity.ok(RecetaResponse.of(recetaService.addIngredienteToReceta(cmd,id)));
 

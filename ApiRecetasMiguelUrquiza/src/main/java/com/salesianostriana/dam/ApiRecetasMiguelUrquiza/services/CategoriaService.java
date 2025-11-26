@@ -1,7 +1,7 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services;
 
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.categoria.EditCategoriaCmd;
-import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.CategoriaNotFoundException;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound.CategoriaNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Categoria;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.respositories.CategoriaRepository;
 import lombok.RequiredArgsConstructor;

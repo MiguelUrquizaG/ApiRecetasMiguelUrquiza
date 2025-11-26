@@ -1,6 +1,6 @@
-package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors;
+package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound;
 
-public class IngredienteNotFoundException extends RuntimeException {
+public class IngredienteNotFoundException extends EntityNotFoundException {
     public IngredienteNotFoundException(String message) {
         super(message);
     }

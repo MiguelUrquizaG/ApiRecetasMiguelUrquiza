@@ -1,7 +1,7 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services;
 
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente.EditIngredienteCmd;
-import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.IngredienteNotFoundException;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound.IngredienteNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Ingrediente;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.respositories.IngredienteRespository;
 import lombok.RequiredArgsConstructor;

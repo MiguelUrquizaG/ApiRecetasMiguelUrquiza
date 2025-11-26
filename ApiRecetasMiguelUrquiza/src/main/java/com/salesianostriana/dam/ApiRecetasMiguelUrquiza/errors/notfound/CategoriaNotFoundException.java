@@ -1,8 +1,8 @@
-package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors;
+package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound;
 
 
 
-public class CategoriaNotFoundException extends RuntimeException {
+public class CategoriaNotFoundException extends EntityNotFoundException {
     public CategoriaNotFoundException(String message) {
         super(message);
     }

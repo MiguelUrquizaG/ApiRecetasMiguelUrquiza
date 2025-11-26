@@ -1,9 +1,10 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services;
 
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente_receta.IngredienteRecetaResponse;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.receta.EditRecetaCmd;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente_receta.IngredienteRecetaCmd;
-import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.CategoriaNotFoundException;
-import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.RecetaNotFoundException;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound.CategoriaNotFoundException;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound.RecetaNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.*;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.respositories.IngredienteRecetaRepository;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.respositories.RecetaRepository;
@@ -88,12 +89,15 @@ public class RecetaService {
         Ingrediente ingrediente = ingredienteService.getById(cmd.idIngrediente());
         IngredienteRecetaCmd newCmd = new IngredienteRecetaCmd(cmd.cantidad(), ingrediente.getId(), idReceta, cmd.unidad());
 
-        ingredienteRecetaRepository.save(IngredientesReceta.builder()
+        IngredientesReceta response = ingredienteRecetaRepository.save(IngredientesReceta.builder()
                 .receta(receta)
                 .ingrediente(ingrediente)
                 .unidad(cmd.unidad())
                 .cantidad(cmd.cantidad())
                 .build());
+
+
+        receta.getIngredientesRecetas().add(response);
 
         return receta;
 
