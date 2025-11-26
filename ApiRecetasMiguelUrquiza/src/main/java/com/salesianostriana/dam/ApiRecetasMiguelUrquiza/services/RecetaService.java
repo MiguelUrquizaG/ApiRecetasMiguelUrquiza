@@ -21,30 +21,32 @@ public class RecetaService {
     private final IngredienteRecetaService ingredienteRecetaService;
 
 
-
-    public List<Receta> getAll(){
+    public List<Receta> getAll() {
         List<Receta> list = recetaRepository.findAll();
 
-        if(list.isEmpty()){
+        if (list.isEmpty()) {
             throw new RecetaNotFoundException();
         }
 
-        return  list;
+        return list;
 
     }
 
-    public Receta getById(Long id){
+    public Receta getById(Long id) {
         return recetaRepository.findById(id).orElseThrow(() -> new CategoriaNotFoundException(id));
     }
 
-    public Receta save (EditRecetaCmd cmd){
-
-        Categoria categoria = categoriaService.getById(cmd.idCategoria());
+    public Receta save(EditRecetaCmd cmd) {
 
 
-        if(categoria == null){
-            throw new CategoriaNotFoundException("No existe la categoría en la que se desea guardar la receta");
+        Categoria categoria;
+        //Esto es un 400 y lo gestiono con un try catch
+        try {
+            categoria = categoriaService.getById(cmd.idCategoria());
+        } catch (CategoriaNotFoundException ex) {
+            throw new IllegalArgumentException();
         }
+
 
         return Receta.builder()
                 .nombre(cmd.nombre())
@@ -54,9 +56,9 @@ public class RecetaService {
                 .build();
     }
 
-    public Receta edit (EditRecetaCmd cmd ,Long id){
+    public Receta edit(EditRecetaCmd cmd, Long id) {
 
-        Categoria c  = categoriaService.getById(cmd.idCategoria());
+        Categoria c = categoriaService.getById(cmd.idCategoria());
 
         return recetaRepository.findById(id)
                 .map(receta -> {
@@ -68,16 +70,16 @@ public class RecetaService {
                 }).orElseThrow(() -> new RecetaNotFoundException(id));
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         Receta receta = recetaRepository.findById(id).orElseThrow(() -> new RecetaNotFoundException("No se ha encontrado la receta que desea eliminar"));
     }
 
 
-    public Receta addIngredienteToReceta(IngredienteRecetaCmd cmd){
+    public Receta addIngredienteToReceta(IngredienteRecetaCmd cmd) {
 
         Receta receta = recetaRepository.findById(cmd.idReceta()).orElseThrow(() -> new RecetaNotFoundException(cmd.idReceta()));
         Ingrediente ingrediente = ingredienteService.getById(cmd.idIngrediente());
-        IngredienteRecetaCmd newCmd  = new IngredienteRecetaCmd(cmd.cantidad(),ingrediente.getId(),receta.getId(),cmd.unidad());
+        IngredienteRecetaCmd newCmd = new IngredienteRecetaCmd(cmd.cantidad(), ingrediente.getId(), receta.getId(), cmd.unidad());
         ingredienteRecetaService.save(newCmd);
 
         return receta;
