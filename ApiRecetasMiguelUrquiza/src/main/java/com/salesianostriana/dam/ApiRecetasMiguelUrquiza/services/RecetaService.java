@@ -1,15 +1,13 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services;
 
-import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.EditRecetaCmd;
-import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.IngredienteRecetaCmd;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.receta.EditRecetaCmd;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente_receta.IngredienteRecetaCmd;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.CategoriaNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.RecetaNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.*;
-import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.respositories.IngredienteRecetaRepository;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.respositories.RecetaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 

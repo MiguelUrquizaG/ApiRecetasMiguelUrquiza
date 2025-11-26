@@ -1,9 +1,6 @@
-package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos;
+package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.receta;
 
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.*;
-
-
-import java.util.List;
 
 public record EditRecetaCmd(
         String nombre,

@@ -1,10 +1,6 @@
-package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos;
+package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente_receta;
 
-import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Ingrediente;
-import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.IngredientesReceta;
-import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Receta;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.TipoUnidad;
-import jakarta.persistence.ManyToOne;
 
 public record IngredienteRecetaCmd(
 

@@ -1,11 +1,7 @@
-package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos;
+package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.categoria;
 
 
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Categoria;
-import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Receta;
-import jakarta.persistence.ManyToOne;
-
-import java.util.List;
 
 public record EditCategoriaCmd(
 

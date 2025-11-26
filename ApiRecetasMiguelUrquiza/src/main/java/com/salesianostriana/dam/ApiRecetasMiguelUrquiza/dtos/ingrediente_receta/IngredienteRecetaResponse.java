@@ -1,25 +1,26 @@
-package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos;
+package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente_receta;
 
-import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Ingrediente;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.IngredientesReceta;
-import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Receta;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.TipoUnidad;
 
 public record IngredienteRecetaResponse(
         Long id,
         int cantidad,
-        Ingrediente ingrediente,
-        Receta receta,
+        String nombreIngrediente,
+        String nombreReceta,
         TipoUnidad unidad
 ) {
 
-    public IngredienteRecetaResponse of (IngredientesReceta ingredientesReceta){
+    //Preguntar si hacer DTOs Simples, para cada relación en este caso ingrediente y Receta.
+    public static IngredienteRecetaResponse of (IngredientesReceta ingredientesReceta){
         return new IngredienteRecetaResponse(
                 ingredientesReceta.getId(),
                 ingredientesReceta.getCantidad(),
-                ingredientesReceta.getIngrediente(),
-                ingredientesReceta.getReceta(),
+                ingredientesReceta.getIngrediente().getNombre(),
+                ingredientesReceta.getReceta().getNombre(),
                 ingredientesReceta.getUnidad()
         );
     }
+
+
 }

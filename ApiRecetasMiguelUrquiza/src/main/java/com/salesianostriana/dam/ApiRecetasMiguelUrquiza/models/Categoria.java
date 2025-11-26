@@ -23,6 +23,7 @@ public class Categoria {
     private String nombre;
     private String descripcion;
 
+    //Fetching y mappedBy
     @OneToMany
     private List<Receta> listaRecetas;
 
