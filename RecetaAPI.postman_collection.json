@@ -1,0 +1,427 @@
+{
+	"info": {
+		"_postman_id": "138531d3-109f-490d-bbd2-15c7da5fd678",
+		"name": "RecetaAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48376105",
+		"_collection_link": "https://urquiza-gamig24-1679476.postman.co/workspace/Miguel-Urquiza-Garc%C3%ADa's-Workspa~aecedbe3-8b1d-4beb-82a0-bb813dda296a/collection/48376105-138531d3-109f-490d-bbd2-15c7da5fd678?action=share&source=collection_link&creator=48376105"
+	},
+	"item": [
+		{
+			"name": "CATEGORIAS",
+			"item": [
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/categorias",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"categorias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\":\"Cocina Mediterranea\",\r\n    \"descripcion\":\"Me gusta mucho\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/categorias/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"categorias",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\":\"Cocina A\",\r\n    \"descripcion\":\"No me gusta Francia\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/categorias",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"categorias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\":\"Cocina df\",\r\n    \"descripcion\":\"Si me gusta Belgica\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/categorias/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"categorias",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/categorias/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"categorias",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "INGREDIENTES",
+			"item": [
+				{
+					"name": "Get All",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\":\"Cocina Belga\",\r\n    \"descripcion\":\"Si me gusta Belgica\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/ingredientes",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ingredientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\":\"Cocina Belga\",\r\n    \"descripcion\":\"Si me gusta Belgica\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/ingredientes/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ingredientes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\":\"Pan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/ingredientes",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ingredientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\":\"Ajos\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/ingredientes/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ingredientes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/ingredientes/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ingredientes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "RECETAS",
+			"item": [
+				{
+					"name": "Get All",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Macarrones\",\r\n    \"tiempoPreparacionMin\": 12,\r\n    \"dificultad\": \"FACIL\",\r\n    \"idCategoria\": 1\r\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/recetas",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"recetas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Caracoles\",\r\n    \"tiempoPreparacionMin\": 12,\r\n    \"dificultad\": \"FACIL\",\r\n    \"idCategoria\": 1\r\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/recetas/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"recetas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Ingrediente Receta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cantidad\": 20,\r\n    \"idIngrediente\": 1,\r\n    \"unidad\": \"KILOS\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/recetas/2/ingredientes",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"recetas",
+								"2",
+								"ingredientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"dasds\",\r\n    \"tiempoPreparacionMin\": 1,\r\n    \"dificultad\": \"DIFICIL\",\r\n    \"idCategoria\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/recetas",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"recetas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Caracoles\",\r\n    \"tiempoPreparacionMin\": 3,\r\n    \"dificultad\": \"DIFICIL\",\r\n    \"idCategoria\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/recetas/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"recetas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cantidad\": 20,\r\n    \"idIngrediente\": 1,\r\n    \"idReceta\": 1,\r\n    \"unidad\": \"KILOS\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/recetas/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"recetas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
