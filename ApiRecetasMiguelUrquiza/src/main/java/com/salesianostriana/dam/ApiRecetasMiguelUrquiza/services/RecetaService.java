@@ -3,11 +3,14 @@ package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.receta.EditRecetaCmd;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente_receta.IngredienteRecetaCmd;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.badRequest.CategoriaNoValidaException;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.badRequest.IngredienteNoValidoException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.badRequest.TiempoInvalidoException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.CategoriaRecetaConflict;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.IngredienteRecetaConflictException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.IngredienteYaAgregadoException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.NombreRecetaDuplicadoException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound.CategoriaNotFoundException;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound.IngredienteNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound.RecetaNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.*;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.respositories.IngredienteRecetaRepository;
@@ -108,8 +111,8 @@ public class RecetaService {
 
     public void deleteById(Long id) {
         Receta receta = recetaRepository.findById(id).orElseThrow(() -> new RecetaNotFoundException("No se ha encontrado la receta que desea eliminar"));
-        if(receta.getCategoria()!=null){
-            throw new CategoriaRecetaConflict("No se puede eliminar una receta relacionada a una categoría");
+        if(!receta.getIngredientesRecetas().isEmpty()){
+            throw new IngredienteRecetaConflictException("No se puede eliminar una receta relacionada a un ingrediente.");
         }
         recetaRepository.deleteById(id);
     }
@@ -118,16 +121,24 @@ public class RecetaService {
     public Receta addIngredienteToReceta(IngredienteRecetaCmd cmd, Long idReceta) {
 
         Receta receta = recetaRepository.findById(idReceta).orElseThrow(() -> new RecetaNotFoundException(idReceta));
-        Ingrediente ingrediente = ingredienteService.getById(cmd.idIngrediente());
+        Ingrediente ingrediente;
+
+
+        try{
+            ingrediente = ingredienteService.getById(cmd.idIngrediente());
+        }catch(IngredienteNotFoundException ex){
+            throw new IngredienteNoValidoException("No se puede agregar un ingrediente que no existe.");
+        }
+
         IngredienteRecetaCmd newCmd = new IngredienteRecetaCmd(cmd.cantidad(), ingrediente.getId(), idReceta, cmd.unidad());
-
-
 
         receta.getIngredientesRecetas().forEach(ingredientesReceta -> {
             if(Objects.equals(ingredientesReceta.getIngrediente().getId(), cmd.idIngrediente())){
                 throw new IngredienteYaAgregadoException();
             }
         });
+
+
 
         IngredientesReceta response = ingredienteRecetaRepository.save(IngredientesReceta.builder()
                 .receta(receta)

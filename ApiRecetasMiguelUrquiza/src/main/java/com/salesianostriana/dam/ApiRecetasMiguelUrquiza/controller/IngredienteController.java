@@ -212,7 +212,26 @@ public class IngredienteController {
         return ResponseEntity.ok(IngredienteResponse.of(ingredienteService.edit(cmd, id)));
     }
 
-    @ApiResponse(responseCode = "204",description = "Cuerpo vacío")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204",description = "Cuerpo vacío"),
+                    @ApiResponse(responseCode = "409",description = "No se puede eliminar un ingrediente relacionado a una receta."
+                    ,content = @Content(mediaType = "application/json"
+                    ,schema = @Schema(implementation = ProblemDetail.class)
+                    ,examples = @ExampleObject("""
+                            
+                            {
+                                "type": "about:blank",
+                                "title": "Conflicto con la entidad",
+                                "status": 409,
+                                "detail": "No se puede eliminar un ingrediente relacionado a una receta.",
+                                "instance": "/ingredientes/1"
+                            }
+                            
+                            """)))
+            }
+    )
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         ingredienteService.deleteById(id);

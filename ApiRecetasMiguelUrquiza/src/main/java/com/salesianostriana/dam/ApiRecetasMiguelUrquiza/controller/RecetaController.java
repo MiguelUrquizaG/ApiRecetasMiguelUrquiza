@@ -285,10 +285,13 @@ public class RecetaController {
                             """)
                     )
                     ),
-                    @ApiResponse(responseCode = "409", description = "No se puede eliminar una receta asociada a una categoría."
+                    @ApiResponse(responseCode = "409", description = "No se puede eliminar una receta si tiene un ingrediente o una categoría asociados."
                             , content = @Content(mediaType = "application/json"
                             , schema = @Schema(implementation = ProblemDetail.class)
-                            , examples = @ExampleObject("""
+                            , examples = {@ExampleObject(
+                                    name = "CategoríaRelacionada",
+                                    description = "No se puede eliminar una receta asociada a una categoría",
+                            value = """
                             {
                                 "type": "about:blank",
                                 "title": "Conflicto con la entidad",
@@ -296,7 +299,21 @@ public class RecetaController {
                                 "detail": "No se puede eliminar una receta asociada a una categoría.",
                                 "instance": "/recetas/2"
                             }
-                            """)
+                            """),
+                            @ExampleObject(
+                                    name = "IngredienteRelacionado",
+                                    description = "No se puede eliminar una receta asociada a un ingrediente.",
+                                    value = """
+                                            {
+                                "type": "about:blank",
+                                "title": "Conflicto con la entidad",
+                                "status": 409,
+                                "detail": "No se puede eliminar una receta asociada a un ingrediente.",
+                                "instance": "/recetas/2"
+                            }
+"""
+                            )
+                            }
                     )
                     )
             }
@@ -307,8 +324,87 @@ public class RecetaController {
         return ResponseEntity.noContent().build();
     }
 
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200",description = "Se ha añadido el ingrediente a la receta."
+                    ,content = @Content(mediaType = "application/json"
+                    ,schema = @Schema(implementation = RecetaResponse.class)
+                    ,examples = @ExampleObject("""
+                            
+                            {
+                                "id": 1,
+                                "nombre": "dasds",
+                                "tiempoPreparacionMin": 1,
+                                "dificultad": "DIFICIL",
+                                "nombreCategoria": "Cocina A",
+                                "listaIngredientes": [
+                                    {
+                                        "id": 1,
+                                        "cantidad": 20,
+                                        "nombreIngrediente": "Agua",
+                                        "nombreReceta": "dasds",
+                                        "unidad": "KILOS"
+                                    }
+                                ]
+                            }
+                            
+                            """)
+                        )
+                    ),
+                    @ApiResponse(responseCode = "400",description = "No se encuentra el ingrediente."
+                    ,content = @Content(mediaType = "application/json"
+                    ,schema = @Schema(implementation = ProblemDetail.class)
+                    ,examples = @ExampleObject("""
+                            
+                            {
+                                "type": "about:blank",
+                                "title": "Requisitos inválidos",
+                                "status": 400,
+                                "detail": "No se puede agregar un ingrediente que no existe.",
+                                "instance": "/recetas/1/ingredientes"
+                            }
+                            """)
+                        )
+                    ),
+                    @ApiResponse(responseCode = "409",description = "No se puede agregar un ingrediente que ya está agregado."
+                    ,content = @Content(mediaType = "application/json"
+                    ,schema = @Schema(implementation = ProblemDetail.class)
+                    ,examples = @ExampleObject(
+                            """
+                            {
+                                "type": "about:blank",
+                                "title": "Conflicto con la entidad",
+                                "status": 409,
+                                "detail": "Este ingrediente ya esta agregado en la receta.",
+                                "instance": "/recetas/1/ingredientes"
+                            }
+                            
+                            """)
+                        )
+                    )
+            }
+    )
     @PostMapping("/{id}/ingredientes")
-    public ResponseEntity<RecetaResponse> addIngredienteToReceta(@PathVariable Long id, @RequestBody IngredienteRecetaCmd cmd) {
+    public ResponseEntity<RecetaResponse> addIngredienteToReceta(
+            @PathVariable Long id,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Datos del ingrediente a asignar a la receta(idIngrediente,cantidad y unidad)",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = IngredienteRecetaCmd.class),
+                            examples = @ExampleObject(
+                                    """
+                                    {
+                                        "idIngrediente":1,
+                                        "cantidad":20,
+                                        "unidad": "KILOS"
+                                    }
+                                    """
+                            )
+                    )
+            )
+            @RequestBody IngredienteRecetaCmd cmd) {
 
         return ResponseEntity.ok(RecetaResponse.of(recetaService.addIngredienteToReceta(cmd, id)));
 

@@ -2,6 +2,7 @@ package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services;
 
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente.EditIngredienteCmd;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.IngredienteCreadoException;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.IngredienteRecetaConflictException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound.IngredienteNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Ingrediente;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.respositories.IngredienteRespository;
@@ -60,6 +61,10 @@ public class IngredienteService {
 
     public void deleteById(Long id){
         Ingrediente ingrediente = ingredienteRespository.findById(id).orElseThrow(() -> new IngredienteNotFoundException(id));
+
+        if(!ingrediente.getIngredientesRecetas().isEmpty()){
+            throw new IngredienteRecetaConflictException("No se puede eliminar un ingrediente relacionado a una receta.");
+        }
 
         ingredienteRespository.deleteById(id);
 
