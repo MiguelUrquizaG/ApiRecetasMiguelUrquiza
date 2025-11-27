@@ -35,5 +35,13 @@ public class IngredienteRecetaService {
 
     }
 
+    public IngredientesReceta edit(IngredienteRecetaCmd cmd,Long id){
+
+    }
+
+    public void deleteById(Long id){
+
+    }
+
 
 }
