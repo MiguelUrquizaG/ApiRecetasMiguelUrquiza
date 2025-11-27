@@ -1,12 +1,12 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict;
 
-public class NombreCategoriaDuplicadoException extends RuntimeException {
+public class NombreCategoriaDuplicadoException extends EntityConflict {
     public NombreCategoriaDuplicadoException(String message) {
         super(message);
     }
 
     public NombreCategoriaDuplicadoException(){
-        super("El nombre ");
+        super("Ya existe una categoria con ese nombre.");
     }
 
 }

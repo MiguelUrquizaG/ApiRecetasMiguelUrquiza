@@ -1,8 +1,10 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services;
 
-import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente_receta.IngredienteRecetaResponse;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.receta.EditRecetaCmd;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente_receta.IngredienteRecetaCmd;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.badRequest.TiempoInvalidoException;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.IngredienteYaAgregadoException;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.NombreRecetaDuplicadoException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound.CategoriaNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound.RecetaNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.*;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -52,6 +55,16 @@ public class RecetaService {
             throw new IllegalArgumentException("No funciona");
         }
 
+        recetaRepository.findAll().forEach(receta -> {
+            if (receta.getNombre().equalsIgnoreCase(cmd.nombre())){
+                throw new NombreRecetaDuplicadoException();
+            }
+        });
+
+        if(cmd.tiempoPreparacionMin()<=0){
+            throw new TiempoInvalidoException();
+        }
+
 
         return recetaRepository.save(Receta.builder()
                 .nombre(cmd.nombre())
@@ -88,6 +101,12 @@ public class RecetaService {
         Receta receta = recetaRepository.findById(idReceta).orElseThrow(() -> new RecetaNotFoundException(idReceta));
         Ingrediente ingrediente = ingredienteService.getById(cmd.idIngrediente());
         IngredienteRecetaCmd newCmd = new IngredienteRecetaCmd(cmd.cantidad(), ingrediente.getId(), idReceta, cmd.unidad());
+
+        receta.getIngredientesRecetas().forEach(ingredientesReceta -> {
+            if(Objects.equals(ingredientesReceta.getIngrediente().getId(), cmd.idIngrediente())){
+                throw new IngredienteYaAgregadoException();
+            }
+        });
 
         IngredientesReceta response = ingredienteRecetaRepository.save(IngredientesReceta.builder()
                 .receta(receta)

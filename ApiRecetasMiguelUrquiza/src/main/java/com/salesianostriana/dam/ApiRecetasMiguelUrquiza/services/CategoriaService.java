@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services;
 
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.categoria.EditCategoriaCmd;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.NombreCategoriaDuplicadoException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound.CategoriaNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Categoria;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.respositories.CategoriaRepository;
@@ -33,6 +34,11 @@ public class CategoriaService {
     public Categoria save(EditCategoriaCmd cmd){
 
 
+        categoriaRepository.findAll().forEach(categoria -> {
+            if (categoria.getNombre().equalsIgnoreCase(cmd.nombre()) ){
+                throw new NombreCategoriaDuplicadoException();
+            }
+        });
 
         return categoriaRepository.save(cmd.toEntity(cmd));
     }

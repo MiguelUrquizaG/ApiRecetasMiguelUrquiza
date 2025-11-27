@@ -1,5 +1,7 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors;
 
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.badRequest.TiempoInvalidoException;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.EntityConflict;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -17,4 +19,20 @@ public class GlobalErrorController extends ResponseEntityExceptionHandler {
         return problemDetail;
 
     }
+
+    @ExceptionHandler(EntityConflict.class)
+    public ProblemDetail handlerEntityConflict(EntityConflict ex){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT,ex.getMessage());
+        problemDetail.setTitle("Conflicto con la entidad");
+
+        return problemDetail;
+    }
+    @ExceptionHandler(TiempoInvalidoException.class)
+    public ProblemDetail handlerTiempoInvalido(TiempoInvalidoException ex){
+        ProblemDetail problemDetail  = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,ex.getMessage());
+        problemDetail.setTitle("Tiempo de preparación inválido");
+        return problemDetail;
+
+    }
+
 }
