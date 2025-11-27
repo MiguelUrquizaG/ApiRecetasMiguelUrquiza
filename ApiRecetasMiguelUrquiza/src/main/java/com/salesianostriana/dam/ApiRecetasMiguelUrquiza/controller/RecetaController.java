@@ -6,9 +6,17 @@ import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.receta.EditRecetaCm
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.receta.RecetaResponse;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Receta;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services.RecetaService;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.function.EntityResponse;
@@ -18,46 +26,291 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/recetas")
+@Tag(name = "Recetas", description = "Este controller maneja toda la lógica de las recetas.")
 public class RecetaController {
 
     private final RecetaService recetaService;
 
 
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Se han encontrado las recetas."
+                            , content = @Content(mediaType = "application/json"
+                            , array = @ArraySchema(schema = @Schema(implementation = RecetaResponse.class))
+                            , examples = @ExampleObject("""
+                            
+                            [
+                                {
+                                    "id": 1,
+                                    "nombre": "Patatas",
+                                    "tiempoPreparacionMin": 1,
+                                    "dificultad": "DIFICIL",
+                                    "nombreCategoria": "Cocina A",
+                                    "listaIngredientes": []
+                                }
+                            ]
+                            """)
+                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "No se han encontrado las recetas."
+                            , content = @Content(mediaType = "application/json"
+                            , schema = @Schema(implementation = ProblemDetail.class)
+                            , examples = @ExampleObject("""
+                             {
+                                "type": "about:blank",
+                                "title": "Entidad no encontrada",
+                                "status": 404,
+                                "detail": "No se ha encontrado la receta buscada",
+                                "instance": "/recetas"
+                            }
+                            """)
+                    )
+                    )
+            }
+    )
     @GetMapping("")
-    public List<RecetaResponse> getAll(){
+    public List<RecetaResponse> getAll() {
         return recetaService.getAll().stream()
                 .map(RecetaResponse::of)
                 .toList();
     }
 
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Se ha encontrado la receta."
+                            , content = @Content(mediaType = "application/json"
+                            , schema = @Schema(implementation = RecetaResponse.class)
+                            , examples = @ExampleObject("""
+                            
+                            {
+                                "id": 1,
+                                "nombre": "Patatas",
+                                "tiempoPreparacionMin": 1,
+                                "dificultad": "DIFICIL",
+                                "nombreCategoria": "Cocina A",
+                                "listaIngredientes": []
+                            }
+                            
+                            """)
+                    )
+                    ),
+                    @ApiResponse(responseCode = "404", description = "No se ha encontrado la receta."
+                            , content = @Content(mediaType = "application/json"
+                            , schema = @Schema(implementation = ProblemDetail.class)
+                            , examples = @ExampleObject("""
+                            {
+                                "type": "about:blank",
+                                "title": "Entidad no encontrada",
+                                "status": 404,
+                                "detail": "No se ha encontrado una categoría con el id: 2",
+                                "instance": "/recetas/2"
+                            }
+                            """)
+                    )
+                    )
+            }
+    )
     @GetMapping("/{id}")
-    public ResponseEntity<RecetaResponse> getById(@PathVariable Long id){
+    public ResponseEntity<RecetaResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(RecetaResponse.of(recetaService.getById(id)));
     }
 
 
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "201", description = "Se ha creado la receta"
+                            , content = @Content(mediaType = "application/json"
+                            , schema = @Schema(implementation = RecetaResponse.class)
+                            , examples = @ExampleObject("""
+                            {
+                                "id": 2,
+                                "nombre": "Pan",
+                                "tiempoPreparacionMin": 1,
+                                "dificultad": "DIFICIL",
+                                "nombreCategoria": "Cocina A",
+                                "listaIngredientes": []
+                            }
+                            """)
+                    )
+                    ),
+                    @ApiResponse(responseCode = "400", description = "Error encontrar categoría/Error tiempo de preparación."
+                            , content = @Content(mediaType = "application/json"
+                            , schema = @Schema(implementation = ProblemDetail.class)
+                            , examples = {@ExampleObject(
+                            name = "CategoriaNoEncontrada",
+                            summary = "No se ha encontrado categoria.",
+                            value = """
+                            {
+                                "type": "about:blank",
+                                "title": "Tiempo de preparación inválido",
+                                "status": 400,
+                                "detail": "No se puede crear la receta ya que no se ha encontrado la categoría.",
+                                "instance": "/recetas"
+                            }
+                            """),
+                            @ExampleObject(
+                                    name = "TiempoInválido",
+                                    summary = "Tiempo de preparación inválido",
+                                    value = """
+                                                            {
+                                                "type": "about:blank",
+                                                "title": "Tiempo de preparación inválido",
+                                                "status": 400,
+                                                "detail": "El tiempo de preparación no puede ser menor o igual que cero.",
+                                                "instance": "/recetas"
+                                            }
+                                            """
+                                )
+                            }
+                        )
+                    ),
+                    @ApiResponse(responseCode = "409", description = "Ya existe una receta con ese nombre."
+                            , content = @Content(mediaType = "application/json"
+                            , schema = @Schema(implementation = ProblemDetail.class)
+                            , examples = @ExampleObject("""
+                            {
+                                "type": "about:blank",
+                                "title": "Conflicto con la entidad",
+                                "status": 409,
+                                "detail": "Ya existe una receta con ese nombre.",
+                                "instance": "/recetas"
+                            }
+                            """)
+                    )
+                    )
+
+            }
+    )
     @PostMapping("")
-    public ResponseEntity<RecetaResponse>create(@RequestBody EditRecetaCmd cmd){
+    public ResponseEntity<RecetaResponse> create(@RequestBody EditRecetaCmd cmd) {
         Receta receta = recetaService.save(cmd);
         return ResponseEntity.status(HttpStatus.CREATED).body(RecetaResponse.of(receta));
 
     }
 
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Se ha editado la receta"
+                            , content = @Content(mediaType = "application/json"
+                            , schema = @Schema(implementation = RecetaResponse.class)
+                            , examples = @ExampleObject("""
+                            {
+                                "id": 1,
+                                "nombre": "Peces",
+                                "tiempoPreparacionMin": 3,
+                                "dificultad": "DIFICIL",
+                                "nombreCategoria": "Cocina A",
+                                "listaIngredientes": [
+                                    {
+                                        "id": 1,
+                                        "cantidad": 20,
+                                        "nombreIngrediente": "Agua",
+                                        "nombreReceta": "Peces",
+                                        "unidad": "KILOS"
+                                    }
+                                ]
+                            }
+                            """)
+                    )
+                    ),
+                    @ApiResponse(responseCode = "400", description = "Error encontrar categoría/Error tiempo de preparación."
+                            , content = @Content(mediaType = "application/json"
+                            , schema = @Schema(implementation = ProblemDetail.class)
+                            , examples = {@ExampleObject(
+                            name = "CategoriaNoEncontrada",
+                            summary = "No se ha encontrado categoria.",
+                            value = """
+                                    {
+                                        "type": "about:blank",
+                                        "title": "Tiempo de preparación inválido",
+                                        "status": 400,
+                                        "detail": "No se puede crear la receta ya que no se ha encontrado la categoría.",
+                                        "instance": "/recetas"
+                                    }
+                                    """),
+                            @ExampleObject(
+                                    name = "TiempoInválido",
+                                    summary = "Tiempo de preparación inválido",
+                                    value = """
+                                                            {
+                                                "type": "about:blank",
+                                                "title": "Tiempo de preparación inválido",
+                                                "status": 400,
+                                                "detail": "El tiempo de preparación no puede ser menor o igual que cero.",
+                                                "instance": "/recetas"
+                                            }
+                                            """
+
+                            )
+                    }
+                    )
+                    ),
+                    @ApiResponse(responseCode = "409", description = "Ya existe una receta con ese nombre."
+                            , content = @Content(mediaType = "application/json"
+                            , schema = @Schema(implementation = ProblemDetail.class)
+                            , examples = @ExampleObject("""
+                            {
+                                "type": "about:blank",
+                                "title": "Conflicto con la entidad",
+                                "status": 409,
+                                "detail": "Ya existe una receta con ese nombre.",
+                                "instance": "/recetas"
+                            }
+                            """)
+                    )
+                    )
+            }
+    )
     @PutMapping("/{id}")
-    public ResponseEntity<RecetaResponse> edit(@PathVariable Long id,@RequestBody EditRecetaCmd cmd){
-        return ResponseEntity.ok(RecetaResponse.of(recetaService.edit(cmd,id)));
+    public ResponseEntity<RecetaResponse> edit(@PathVariable Long id, @RequestBody EditRecetaCmd cmd) {
+        return ResponseEntity.ok(RecetaResponse.of(recetaService.edit(cmd, id)));
     }
 
+
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Cuerpo Vacío"),
+                    @ApiResponse(responseCode = "404", description = "No se ha encontrado la receta a eliminar."
+                            , content = @Content(mediaType = "application/json"
+                            , schema = @Schema(implementation = ProblemDetail.class)
+                            , examples = @ExampleObject("""
+                            {
+                                "type": "about:blank",
+                                "title": "Entidad no encontrada",
+                                "status": 404,
+                                "detail": "No se ha encontrado la receta que desea eliminar",
+                                "instance": "/recetas/3"
+                            }
+                            
+                            """)
+                    )
+                    ),
+                    @ApiResponse(responseCode = "409", description = "No se puede eliminar una receta asociada a una categoría."
+                            , content = @Content(mediaType = "application/json"
+                            , schema = @Schema(implementation = ProblemDetail.class)
+                            , examples = @ExampleObject("""
+                            {
+                                "type": "about:blank",
+                                "title": "Conflicto con la entidad",
+                                "status": 409,
+                                "detail": "No se puede eliminar una receta asociada a una categoría.",
+                                "instance": "/recetas/2"
+                            }
+                            """)
+                    )
+                    )
+            }
+    )
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable Long id){
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
         recetaService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{id}/ingredientes")
-    public ResponseEntity<RecetaResponse>addIngredienteToReceta(@PathVariable Long id, @RequestBody IngredienteRecetaCmd cmd){
+    public ResponseEntity<RecetaResponse> addIngredienteToReceta(@PathVariable Long id, @RequestBody IngredienteRecetaCmd cmd) {
 
-        return ResponseEntity.ok(RecetaResponse.of(recetaService.addIngredienteToReceta(cmd,id)));
+        return ResponseEntity.ok(RecetaResponse.of(recetaService.addIngredienteToReceta(cmd, id)));
 
     }
 

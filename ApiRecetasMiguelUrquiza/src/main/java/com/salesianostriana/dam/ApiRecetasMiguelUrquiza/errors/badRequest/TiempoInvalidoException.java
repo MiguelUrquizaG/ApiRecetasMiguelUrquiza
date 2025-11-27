@@ -1,6 +1,6 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.badRequest;
 
-public class TiempoInvalidoException extends RuntimeException {
+public class TiempoInvalidoException extends EntityBadRequestException {
     public TiempoInvalidoException(String message) {
         super(message);
     }

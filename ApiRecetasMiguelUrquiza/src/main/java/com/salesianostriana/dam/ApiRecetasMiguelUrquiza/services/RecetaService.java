@@ -2,6 +2,7 @@ package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services;
 
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.receta.EditRecetaCmd;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente_receta.IngredienteRecetaCmd;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.badRequest.CategoriaNoValidaException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.badRequest.TiempoInvalidoException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.CategoriaRecetaConflict;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.IngredienteYaAgregadoException;
@@ -53,7 +54,7 @@ public class RecetaService {
         try {
             categoria = categoriaService.getById(cmd.idCategoria());
         } catch (CategoriaNotFoundException ex) {
-            throw new IllegalArgumentException("No funciona");
+            throw new CategoriaNoValidaException("No se puede crear la receta ya que no se ha encontrado la categoría.");
         }
 
         recetaRepository.findAll().forEach(receta -> {
@@ -77,7 +78,23 @@ public class RecetaService {
 
     public Receta edit(EditRecetaCmd cmd, Long id) {
 
-        Categoria c = categoriaService.getById(cmd.idCategoria());
+        Categoria c ;
+
+        try {
+            c = categoriaService.getById(cmd.idCategoria());
+        } catch (CategoriaNotFoundException ex) {
+            throw new CategoriaNoValidaException("No se puede editar la receta ya que no se ha encontrado la categoría.");
+        }
+
+        recetaRepository.findAll().forEach(receta -> {
+            if (receta.getNombre().equalsIgnoreCase(cmd.nombre())){
+                throw new NombreRecetaDuplicadoException();
+            }
+        });
+
+        if(cmd.tiempoPreparacionMin()<=0){
+            throw new TiempoInvalidoException();
+        }
 
         return recetaRepository.findById(id)
                 .map(receta -> {
@@ -85,7 +102,7 @@ public class RecetaService {
                     receta.setDificultad(cmd.dificultad());
                     receta.setTiempoPreparacionMin(cmd.tiempoPreparacionMin());
                     receta.setNombre(cmd.nombre());
-                    return receta;
+                    return recetaRepository.save(receta);
                 }).orElseThrow(() -> new RecetaNotFoundException(id));
     }
 

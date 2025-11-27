@@ -233,10 +233,10 @@ public class CategoriaController {
                     ,examples = @ExampleObject("""
                             {
                                 "type": "about:blank",
-                                "title": "Conflicto con la entidad",
-                                "status": 409,
-                                "detail": "No se puede eliminar una categoria relacionada a recetas.",
-                                "instance": "/categorias/2"
+                                "title": "Entidad no encontrada",
+                                "status": 404,
+                                "detail": "No se encuentra la categoría para eliminarla",
+                                "instance": "/categorias/4"
                             }
                             """)
                         )

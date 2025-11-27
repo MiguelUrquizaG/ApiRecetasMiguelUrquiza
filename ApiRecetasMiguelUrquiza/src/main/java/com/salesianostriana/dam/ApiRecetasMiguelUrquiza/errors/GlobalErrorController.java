@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors;
 
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.badRequest.EntityBadRequestException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.badRequest.TiempoInvalidoException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.EntityConflict;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound.EntityNotFoundException;
@@ -27,10 +28,10 @@ public class GlobalErrorController extends ResponseEntityExceptionHandler {
 
         return problemDetail;
     }
-    @ExceptionHandler(TiempoInvalidoException.class)
-    public ProblemDetail handlerTiempoInvalido(TiempoInvalidoException ex){
+    @ExceptionHandler(EntityBadRequestException.class)
+    public ProblemDetail handlerTiempoInvalido(EntityBadRequestException ex){
         ProblemDetail problemDetail  = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,ex.getMessage());
-        problemDetail.setTitle("Tiempo de preparación inválido");
+        problemDetail.setTitle("Requisitos inválidos");
         return problemDetail;
 
     }
