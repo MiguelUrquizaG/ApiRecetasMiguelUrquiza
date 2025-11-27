@@ -4,8 +4,16 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente.EditIngredienteCmd;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente.IngredienteResponse;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services.IngredienteService;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,34 +23,116 @@ import java.util.List;
 @RestController
 @RequestMapping("/ingredientes")
 @RequiredArgsConstructor
+@Tag(name = "Ingredientes", description = "Este controller maneja controla las operaciones con ingredientes")
 public class IngredienteController {
 
     private final IngredienteService ingredienteService;
 
 
+    @ApiResponses(
+            value = {
+            @ApiResponse(responseCode = "200", description = "Se han encontrado ingredientes.", content = @Content(mediaType = "application/json", array = @ArraySchema(
+                    schema = @Schema(implementation = IngredienteResponse.class)
+            ),
+                    examples = @ExampleObject(value =
+                            """
+                                    [
+                                        {
+                                              "id": 1,
+                                              "nombre": "Mantequilla",
+                                              "ingredientesRecetas": [{
+                                                                       "id": 1,
+                                                                       "cantidad": 20,
+                                                                       "nombreIngrediente": "Mantequilla",
+                                                                       "nombreReceta": "Patatas",
+                                                                       "unidad": "KILOS"
+                                                                      }]
+                                        }
+                                    ]
+                                    
+                                    """)
+            )),
+            @ApiResponse(responseCode = "404", description = "No se ha encontrado la categoría"
+            ,content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class),
+                    examples = @ExampleObject("""
+                            
+                            {
+                                "type": "about:blank",
+                                "title": "Entidad no encontrada",
+                                "status": 404,
+                                "detail": "No se ha encontrado la categoría",
+                                "instance": "/categorias"
+                            }
+                            
+                            """)
+                )
+            )
+    })
+
     @GetMapping("")
-    public List<IngredienteResponse> getAll(){
+    public List<IngredienteResponse> getAll() {
         return ingredienteService.getAll().stream()
                 .map(IngredienteResponse::of).toList();
     }
 
+
+    @ApiResponses(
+           value = {
+                @ApiResponse(responseCode = "200",description = "Se ha encontrado el ingrediente"
+                        ,content =@Content(mediaType = "application/json",
+                        schema = @Schema(implementation = IngredienteResponse.class),
+                        examples = @ExampleObject("""
+                                
+                                {
+                                    "id": 1,
+                                    "nombre": "Cocina Francesa",
+                                    "descripcion": "No me gusta Francia",
+                                    "listaRecetas": []
+                                }
+                                
+                                """)
+                    )
+                ),
+                @ApiResponse(responseCode = "404",description = "No se ha encontrado un ingrediente con el id otorgado"
+                        ,content = @Content(mediaType = "applicaiton/json"
+                        ,schema =@Schema(implementation = ProblemDetail.class)
+                        ,examples = @ExampleObject("""
+                        
+                        {
+                            "type": "about:blank",
+                            "title": "Entidad no encontrada",
+                            "status": 404,
+                            "detail": "No se ha encontrado una categoría con el id: 2",
+                            "instance": "/categorias/2"
+                        }
+                        
+                        """)
+                    )
+                )
+            })
     @GetMapping("/{id}")
-    public ResponseEntity<IngredienteResponse> getById(@PathVariable Long id){
+    public ResponseEntity<IngredienteResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(IngredienteResponse.of(ingredienteService.getById(id)));
     }
 
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "201",description = "Se ha creado correctamente el ingrediente")
+            })
     @PostMapping("")
-    public ResponseEntity<IngredienteResponse>create(@RequestBody EditIngredienteCmd cmd){
+    public ResponseEntity<IngredienteResponse> create(@RequestBody EditIngredienteCmd cmd) {
         return ResponseEntity.status(HttpStatus.CREATED).body(IngredienteResponse.of(ingredienteService.save(cmd)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<IngredienteResponse>edit(@PathVariable Long id,@RequestBody EditIngredienteCmd cmd){
-        return ResponseEntity.ok(IngredienteResponse.of(ingredienteService.edit(cmd,id)));
+    public ResponseEntity<IngredienteResponse> edit(@PathVariable Long id, @RequestBody EditIngredienteCmd cmd) {
+        return ResponseEntity.ok(IngredienteResponse.of(ingredienteService.edit(cmd, id)));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?>deleteById(@PathVariable Long id){
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
         ingredienteService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

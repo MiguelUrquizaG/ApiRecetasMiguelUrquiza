@@ -16,7 +16,6 @@ public record EditCategoriaCmd(
         return  Categoria.builder()
                 .nombre(cmd.nombre)
                 .descripcion(cmd.descripcion)
-                .listaRecetas(new ArrayList<Receta>())
                 .build();
     }
 }

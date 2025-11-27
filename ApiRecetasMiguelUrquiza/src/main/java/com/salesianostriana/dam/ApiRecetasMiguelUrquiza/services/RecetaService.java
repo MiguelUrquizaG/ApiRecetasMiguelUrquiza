@@ -3,6 +3,7 @@ package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.receta.EditRecetaCmd;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente_receta.IngredienteRecetaCmd;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.badRequest.TiempoInvalidoException;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.CategoriaRecetaConflict;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.IngredienteYaAgregadoException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.NombreRecetaDuplicadoException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound.CategoriaNotFoundException;
@@ -71,7 +72,6 @@ public class RecetaService {
                 .tiempoPreparacionMin(cmd.tiempoPreparacionMin())
                 .dificultad(cmd.dificultad())
                 .categoria(categoria)
-                .ingredientesRecetas(new ArrayList<IngredientesReceta>())
                 .build());
     }
 
@@ -101,6 +101,10 @@ public class RecetaService {
         Receta receta = recetaRepository.findById(idReceta).orElseThrow(() -> new RecetaNotFoundException(idReceta));
         Ingrediente ingrediente = ingredienteService.getById(cmd.idIngrediente());
         IngredienteRecetaCmd newCmd = new IngredienteRecetaCmd(cmd.cantidad(), ingrediente.getId(), idReceta, cmd.unidad());
+
+        if(receta.getCategoria()!=null){
+            throw new CategoriaRecetaConflict("No se puede eliminar una receta relacionada a una categoría");
+        }
 
         receta.getIngredientesRecetas().forEach(ingredientesReceta -> {
             if(Objects.equals(ingredientesReceta.getIngrediente().getId(), cmd.idIngrediente())){

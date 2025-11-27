@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services;
 
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.categoria.EditCategoriaCmd;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.CategoriaRecetaConflict;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.NombreCategoriaDuplicadoException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound.CategoriaNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Categoria;
@@ -55,6 +56,10 @@ public class CategoriaService {
 
     public void deleteById(Long id){
         Categoria c = categoriaRepository.findById(id).orElseThrow(() -> new CategoriaNotFoundException("No se encuentra la categoría para eliminarla"));
+
+        if( c.getListaRecetas() !=null){
+            throw new CategoriaRecetaConflict("No se puede eliminar una categoria relacionada a recetas.");
+        }
 
         categoriaRepository.deleteById(id);
     }

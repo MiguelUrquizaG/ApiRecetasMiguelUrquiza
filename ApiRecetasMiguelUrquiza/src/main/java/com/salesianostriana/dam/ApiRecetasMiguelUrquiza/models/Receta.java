@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,8 +29,9 @@ public class Receta {
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
+    @Builder.Default
     @OneToMany(mappedBy = "receta",fetch = FetchType.EAGER)
-    private List<IngredientesReceta> ingredientesRecetas;
+    private List<IngredientesReceta> ingredientesRecetas = new ArrayList<>();
 
     @Override
     public final boolean equals(Object o) {
