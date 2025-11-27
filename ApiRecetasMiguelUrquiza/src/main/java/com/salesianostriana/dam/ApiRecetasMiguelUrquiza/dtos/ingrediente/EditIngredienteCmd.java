@@ -12,7 +12,7 @@ public record EditIngredienteCmd(
     public Ingrediente toEntity (EditIngredienteCmd cmd){
         return Ingrediente.builder()
                 .nombre(cmd.nombre)
-                .ingredientesRecetas(new ArrayList<IngredientesReceta>())
+                .ingredientesRecetas(new ArrayList<IngredientesReceta>())//Preguntar como gestionar esto
                 .build();
     }
 }
