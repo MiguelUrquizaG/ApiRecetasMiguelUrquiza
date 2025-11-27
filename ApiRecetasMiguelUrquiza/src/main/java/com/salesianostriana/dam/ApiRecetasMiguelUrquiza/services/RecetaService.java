@@ -91,7 +91,9 @@ public class RecetaService {
 
     public void deleteById(Long id) {
         Receta receta = recetaRepository.findById(id).orElseThrow(() -> new RecetaNotFoundException("No se ha encontrado la receta que desea eliminar"));
-
+        if(receta.getCategoria()!=null){
+            throw new CategoriaRecetaConflict("No se puede eliminar una receta relacionada a una categoría");
+        }
         recetaRepository.deleteById(id);
     }
 
@@ -102,9 +104,7 @@ public class RecetaService {
         Ingrediente ingrediente = ingredienteService.getById(cmd.idIngrediente());
         IngredienteRecetaCmd newCmd = new IngredienteRecetaCmd(cmd.cantidad(), ingrediente.getId(), idReceta, cmd.unidad());
 
-        if(receta.getCategoria()!=null){
-            throw new CategoriaRecetaConflict("No se puede eliminar una receta relacionada a una categoría");
-        }
+
 
         receta.getIngredientesRecetas().forEach(ingredientesReceta -> {
             if(Objects.equals(ingredientesReceta.getIngrediente().getId(), cmd.idIngrediente())){

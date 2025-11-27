@@ -52,7 +52,7 @@ public class IngredienteController {
                                     
                                     """)
             )),
-            @ApiResponse(responseCode = "404", description = "No se ha encontrado la categoría"
+            @ApiResponse(responseCode = "404", description = "No se ha encontrado el ingrediente"
             ,content = @Content(
                     mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class),
@@ -62,8 +62,8 @@ public class IngredienteController {
                                 "type": "about:blank",
                                 "title": "Entidad no encontrada",
                                 "status": 404,
-                                "detail": "No se ha encontrado la categoría",
-                                "instance": "/categorias"
+                                "detail": "No se ha encontrado un ingrediente.",
+                                "instance": "/ingredientes"
                             }
                             
                             """)
@@ -104,8 +104,8 @@ public class IngredienteController {
                             "type": "about:blank",
                             "title": "Entidad no encontrada",
                             "status": 404,
-                            "detail": "No se ha encontrado una categoría con el id: 2",
-                            "instance": "/categorias/2"
+                            "detail": "No se ha encontrado un ingrediente con el id: 1",
+                            "instance": "/ingredientes/1"
                         }
                         
                         """)
@@ -119,18 +119,100 @@ public class IngredienteController {
 
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "201",description = "Se ha creado correctamente el ingrediente")
+                    @ApiResponse(responseCode = "201",description = "Se ha creado correctamente el ingrediente"
+                    ,content = @Content(mediaType = "application/json"
+                    ,schema = @Schema(implementation = IngredienteResponse.class)
+                    ,examples = @ExampleObject("""
+                            
+                            {
+                                "id": 3,
+                                "nombre": "Papas",
+                                "ingredientesRecetas": []
+                            }
+                            
+                            
+                            """)
+                        )
+                    ),
+                    @ApiResponse(responseCode = "409",description = "No se ha podido crear el ingrediente ya que existe uno con ese nombre."
+                    ,content = @Content(mediaType = "application/json"
+                    ,schema = @Schema(implementation = ProblemDetail.class)
+                    ,examples = @ExampleObject("""
+                            
+                            {
+                                "type": "about:blank",
+                                "title": "Conflicto con la entidad",
+                                "status": 409,
+                                "detail": "Ya existe un ingrediente con ese nombre",
+                                "instance": "/ingredientes"
+                            }
+                            
+                            """)
+                        )
+                    )
             })
     @PostMapping("")
     public ResponseEntity<IngredienteResponse> create(@RequestBody EditIngredienteCmd cmd) {
         return ResponseEntity.status(HttpStatus.CREATED).body(IngredienteResponse.of(ingredienteService.save(cmd)));
     }
 
+     @ApiResponses(
+             value = {
+
+                     @ApiResponse(responseCode = "200",description = "Se ha modificado perfectamente el ingrediente."
+                     ,content = @Content(mediaType = "application/json"
+                     ,schema = @Schema(implementation = IngredienteResponse.class)
+                     ,examples = @ExampleObject("""
+                             
+                             {
+                                 "id": 2,
+                                 "nombre": "Pan",
+                                 "ingredientesRecetas": []
+                             }
+                             
+                             """)
+                        )
+                     ),
+                     @ApiResponse(responseCode = "404",description = "No se encuentra el ingrediente."
+                     ,content = @Content(mediaType = "application/json"
+                     ,schema = @Schema(implementation = ProblemDetail.class)
+                     ,examples = @ExampleObject("""
+                             
+                             {
+                                 "type": "about:blank",
+                                 "title": "Entidad no encontrada",
+                                 "status": 404,
+                                 "detail": "No se ha encontrado un ingrediente con el id: 4",
+                                 "instance": "/ingredientes/4"
+                             }
+                             
+                             """)
+                        )
+                     ),
+                     @ApiResponse(responseCode = "409",description = "Ya existe un ingrediente con ese nombre"
+                     ,content = @Content(mediaType = "application/json"
+                     ,schema = @Schema(implementation = ProblemDetail.class)
+                     ,examples = @ExampleObject("""
+                             
+                             {
+                                 "type": "about:blank",
+                                 "title": "Conflicto con la entidad",
+                                 "status": 409,
+                                 "detail": "Ya existe un ingrediente con ese nombre",
+                                 "instance": "/ingredientes/4"
+                             }
+                             """)
+                        )
+                     )
+
+
+             })
     @PutMapping("/{id}")
     public ResponseEntity<IngredienteResponse> edit(@PathVariable Long id, @RequestBody EditIngredienteCmd cmd) {
         return ResponseEntity.ok(IngredienteResponse.of(ingredienteService.edit(cmd, id)));
     }
 
+    @ApiResponse(responseCode = "204",description = "Cuerpo vacío")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         ingredienteService.deleteById(id);

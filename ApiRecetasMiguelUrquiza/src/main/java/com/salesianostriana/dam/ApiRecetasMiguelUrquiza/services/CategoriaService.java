@@ -45,6 +45,11 @@ public class CategoriaService {
     }
 
     public Categoria edit(EditCategoriaCmd cmd,Long id){
+        categoriaRepository.findAll().forEach(categoria -> {
+            if (categoria.getNombre().equalsIgnoreCase(cmd.nombre()) ){
+                throw new NombreCategoriaDuplicadoException();
+            }
+        });
         return categoriaRepository.findById(id)
                 .map(categoria -> {
                     categoria.setNombre(cmd.nombre());
@@ -57,7 +62,7 @@ public class CategoriaService {
     public void deleteById(Long id){
         Categoria c = categoriaRepository.findById(id).orElseThrow(() -> new CategoriaNotFoundException("No se encuentra la categoría para eliminarla"));
 
-        if( c.getListaRecetas() !=null){
+        if(!c.getListaRecetas().isEmpty()){
             throw new CategoriaRecetaConflict("No se puede eliminar una categoria relacionada a recetas.");
         }
 

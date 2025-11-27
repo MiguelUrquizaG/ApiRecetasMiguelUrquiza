@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services;
 
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente.EditIngredienteCmd;
+import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.confict.IngredienteCreadoException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.errors.notfound.IngredienteNotFoundException;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Ingrediente;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.respositories.IngredienteRespository;
@@ -31,14 +32,29 @@ public class IngredienteService {
     }
 
     public Ingrediente save(EditIngredienteCmd cmd){
+
+        ingredienteRespository.findAll().forEach(ingrediente -> {
+            if(ingrediente.getNombre().equalsIgnoreCase(cmd.nombre())){
+                throw new IngredienteCreadoException("Ya existe un ingrediente con ese nombre");
+            }
+        });
+
         return ingredienteRespository.save(cmd.toEntity(cmd));
     }
 
     public Ingrediente edit (EditIngredienteCmd cmd, Long id){
+
+        ingredienteRespository.findAll().forEach(ingrediente -> {
+            if(ingrediente.getNombre().equalsIgnoreCase(cmd.nombre())){
+                throw new IngredienteCreadoException("Ya existe un ingrediente con ese nombre");
+            }
+        });
+
+
         return ingredienteRespository.findById(id)
                 .map(ingrediente -> {
                     ingrediente.setNombre(cmd.nombre());
-                    return ingrediente;
+                    return ingredienteRespository.save(ingrediente);
                 }).orElseThrow(() -> new IngredienteNotFoundException(id));
     }
 
