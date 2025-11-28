@@ -167,6 +167,6 @@ Miguel Urquiza García
 ---
 ## Información Curso
 
-Curso 2025-2026
-Proyecto Desarrollado en el curso de Desarrollo de Aplicaciones Multiplataforma
--Salesianos San Pedro - Triana, Sevilla.
+- Proyecto Desarrollado en el curso de Desarrollo de Aplicaciones Multiplataforma
+- Salesianos San Pedro - Triana, Sevilla.
+- Curso 2025-2026
