@@ -165,6 +165,8 @@ src/main/java/com/salesianostriana/dam/ApiRecetasMiguelUrquiza/
 Miguel Urquiza García
 
 ---
+## Información Curso
 
-Proyecto desarrollado para Acceso a Datos y Programación de Servicios y Procesos  
-Curso 2024-2025
+Curso 2025-2026
+Proyecto Desarrollado en el curso de Desarrollo de Aplicaciones Multiplataforma
+-Salesianos San Pedro - Triana, Sevilla.
