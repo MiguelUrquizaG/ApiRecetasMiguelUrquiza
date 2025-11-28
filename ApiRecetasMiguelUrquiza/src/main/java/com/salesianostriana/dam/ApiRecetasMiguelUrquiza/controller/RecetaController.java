@@ -6,6 +6,7 @@ import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.receta.EditRecetaCm
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.receta.RecetaResponse;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Receta;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services.RecetaService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -32,6 +33,7 @@ public class RecetaController {
     private final RecetaService recetaService;
 
 
+    @Operation(summary = "Obtiene todas las recetas.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Se han encontrado las recetas."
@@ -74,7 +76,7 @@ public class RecetaController {
                 .map(RecetaResponse::of)
                 .toList();
     }
-
+    @Operation(summary = "Obtiene una receta según el ID.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Se ha encontrado la receta."
@@ -115,7 +117,7 @@ public class RecetaController {
         return ResponseEntity.ok(RecetaResponse.of(recetaService.getById(id)));
     }
 
-
+    @Operation(summary = "Crea una receta en base a los parámetros")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "201", description = "Se ha creado la receta"
@@ -187,7 +189,7 @@ public class RecetaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(RecetaResponse.of(receta));
 
     }
-
+    @Operation(summary = "Edita una receta según su ID y los parámetros requeridos.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Se ha editado la receta"
@@ -267,6 +269,7 @@ public class RecetaController {
     }
 
 
+    @Operation(summary = "Elimina una receta según su ID.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "204", description = "Cuerpo Vacío"),
@@ -324,6 +327,7 @@ public class RecetaController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Agrega un ingrediente en una receta.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200",description = "Se ha añadido el ingrediente a la receta."

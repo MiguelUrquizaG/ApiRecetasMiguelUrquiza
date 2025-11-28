@@ -4,6 +4,7 @@ import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.categoria.Categoria
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.categoria.EditCategoriaCmd;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.models.Categoria;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services.CategoriaService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -28,6 +29,7 @@ public class CategoriaController {
     private final CategoriaService categoriaService;
 
 
+    @Operation(summary = "Obtiene todas las categorías")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200",description = "Se han encontrado las categorías"
@@ -72,7 +74,7 @@ public class CategoriaController {
                 .toList();
 
     }
-
+    @Operation(summary = "Obtiene una categoría en base al id otorgado.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200",description = "Categoría encontrada"
@@ -112,7 +114,7 @@ public class CategoriaController {
         );
     }
 
-
+    @Operation(summary = "Crea una categoría según los datos otorgados, siempre y cuando sean válidos.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "201",description = "Se ha creado la categoría."
@@ -154,7 +156,7 @@ public class CategoriaController {
 
     }
 
-
+    @Operation(summary = "Edita una categoría seguún los datos otorgados y el id.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200",description = "Se ha modificado correctamente la categoría."
@@ -208,6 +210,7 @@ public class CategoriaController {
         return ResponseEntity.ok(CategoriaResponse.of(categoriaService.edit(cmd,id)));
     }
 
+    @Operation(summary = "Elimina la categoría en base al id.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "204",description = "Cuerpo Vacío"),
@@ -234,9 +237,9 @@ public class CategoriaController {
                             {
                                 "type": "about:blank",
                                 "title": "Entidad no encontrada",
-                                "status": 404,
-                                "detail": "No se encuentra la categoría para eliminarla",
-                                "instance": "/categorias/4"
+                                "status": 409,
+                                "detail": "No se puede eliminar una categoría con recetas Asociadas.",
+                                "instance": "/categorias/1"
                             }
                             """)
                         )

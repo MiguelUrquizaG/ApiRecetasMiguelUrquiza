@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente.EditIngredienteCmd;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.dtos.ingrediente.IngredienteResponse;
 import com.salesianostriana.dam.ApiRecetasMiguelUrquiza.services.IngredienteService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -28,7 +29,7 @@ public class IngredienteController {
 
     private final IngredienteService ingredienteService;
 
-
+    @Operation(summary = "Obtiene todos los ingredientes.")
     @ApiResponses(
             value = {
             @ApiResponse(responseCode = "200", description = "Se han encontrado ingredientes.", content = @Content(mediaType = "application/json", array = @ArraySchema(
@@ -77,7 +78,7 @@ public class IngredienteController {
                 .map(IngredienteResponse::of).toList();
     }
 
-
+    @Operation(summary = "Obtiene un ingrediente en base al id.")
     @ApiResponses(
            value = {
                 @ApiResponse(responseCode = "200",description = "Se ha encontrado el ingrediente"
@@ -117,6 +118,7 @@ public class IngredienteController {
         return ResponseEntity.ok(IngredienteResponse.of(ingredienteService.getById(id)));
     }
 
+    @Operation(summary = "Crea un ingrediente según los parámetros.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "201",description = "Se ha creado correctamente el ingrediente"
@@ -155,7 +157,7 @@ public class IngredienteController {
     public ResponseEntity<IngredienteResponse> create(@RequestBody EditIngredienteCmd cmd) {
         return ResponseEntity.status(HttpStatus.CREATED).body(IngredienteResponse.of(ingredienteService.save(cmd)));
     }
-
+    @Operation(summary = "Edita una categoría en base al id otorgado.")
      @ApiResponses(
              value = {
 
@@ -211,7 +213,7 @@ public class IngredienteController {
     public ResponseEntity<IngredienteResponse> edit(@PathVariable Long id, @RequestBody EditIngredienteCmd cmd) {
         return ResponseEntity.ok(IngredienteResponse.of(ingredienteService.edit(cmd, id)));
     }
-
+    @Operation(summary = "Elimina un ingrediente según el ID.")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "204",description = "Cuerpo vacío"),
