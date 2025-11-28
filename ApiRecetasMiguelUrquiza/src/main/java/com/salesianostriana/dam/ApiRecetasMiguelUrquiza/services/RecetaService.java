@@ -111,9 +111,13 @@ public class RecetaService {
 
     public void deleteById(Long id) {
         Receta receta = recetaRepository.findById(id).orElseThrow(() -> new RecetaNotFoundException("No se ha encontrado la receta que desea eliminar"));
-        if(!receta.getIngredientesRecetas().isEmpty()){
-            throw new IngredienteRecetaConflictException("No se puede eliminar una receta relacionada a un ingrediente.");
-        }
+
+        receta.getIngredientesRecetas().forEach(ingredientesReceta -> {
+            if(ingredientesReceta.getReceta().getId() == receta.getId()){
+                ingredienteRecetaRepository.delete(ingredientesReceta);
+            }
+        });
+
         recetaRepository.deleteById(id);
     }
 

@@ -217,18 +217,17 @@ public class IngredienteController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "204",description = "Cuerpo vacío"),
-                    @ApiResponse(responseCode = "409",description = "No se puede eliminar un ingrediente relacionado a una receta."
+                    @ApiResponse(responseCode = "404",description = "No se ha eliminado el ingrediente debido a que no se encuentra."
                     ,content = @Content(mediaType = "application/json"
                     ,schema = @Schema(implementation = ProblemDetail.class)
                     ,examples = @ExampleObject("""
-                            
                             {
-                                "type": "about:blank",
-                                "title": "Conflicto con la entidad",
-                                "status": 409,
-                                "detail": "No se puede eliminar un ingrediente relacionado a una receta.",
-                                "instance": "/ingredientes/1"
-                            }
+                                 "type": "about:blank",
+                                 "title": "Entidad no encontrada",
+                                 "status": 404,
+                                 "detail": "No se ha encontrado un ingrediente con el id: 4",
+                                 "instance": "/ingredientes/4"
+                             }
                             
                             """)))
             }

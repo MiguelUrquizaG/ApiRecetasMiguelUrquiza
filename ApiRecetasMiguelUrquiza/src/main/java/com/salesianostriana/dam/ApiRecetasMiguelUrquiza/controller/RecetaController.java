@@ -224,9 +224,9 @@ public class RecetaController {
                             value = """
                                     {
                                         "type": "about:blank",
-                                        "title": "Tiempo de preparación inválido",
+                                        "title": "No se ha encontrado la categoría",
                                         "status": 400,
-                                        "detail": "No se puede crear la receta ya que no se ha encontrado la categoría.",
+                                        "detail": "No se puede editar la receta ya que no se ha encontrado la categoría.",
                                         "instance": "/recetas"
                                     }
                                     """),
@@ -286,37 +286,6 @@ public class RecetaController {
                             }
                             
                             """)
-                    )
-                    ),
-                    @ApiResponse(responseCode = "409", description = "No se puede eliminar una receta si tiene un ingrediente o una categoría asociados."
-                            , content = @Content(mediaType = "application/json"
-                            , schema = @Schema(implementation = ProblemDetail.class)
-                            , examples = {@ExampleObject(
-                                    name = "CategoríaRelacionada",
-                                    description = "No se puede eliminar una receta asociada a una categoría",
-                            value = """
-                            {
-                                "type": "about:blank",
-                                "title": "Conflicto con la entidad",
-                                "status": 409,
-                                "detail": "No se puede eliminar una receta asociada a una categoría.",
-                                "instance": "/recetas/2"
-                            }
-                            """),
-                            @ExampleObject(
-                                    name = "IngredienteRelacionado",
-                                    description = "No se puede eliminar una receta asociada a un ingrediente.",
-                                    value = """
-                                            {
-                                "type": "about:blank",
-                                "title": "Conflicto con la entidad",
-                                "status": 409,
-                                "detail": "No se puede eliminar una receta asociada a un ingrediente.",
-                                "instance": "/recetas/2"
-                            }
-"""
-                            )
-                            }
                     )
                     )
             }
