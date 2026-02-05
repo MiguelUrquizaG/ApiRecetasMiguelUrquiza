@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -184,7 +185,7 @@ public class RecetaController {
             }
     )
     @PostMapping("")
-    public ResponseEntity<RecetaResponse> create(@RequestBody EditRecetaCmd cmd) {
+    public ResponseEntity<RecetaResponse> create(@Valid @RequestBody EditRecetaCmd cmd) {
         Receta receta = recetaService.save(cmd);
         return ResponseEntity.status(HttpStatus.CREATED).body(RecetaResponse.of(receta));
 

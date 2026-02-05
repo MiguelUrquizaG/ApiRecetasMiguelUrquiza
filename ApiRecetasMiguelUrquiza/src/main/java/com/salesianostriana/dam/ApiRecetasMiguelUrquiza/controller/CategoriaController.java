@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -147,7 +148,7 @@ public class CategoriaController {
             }
     )
     @PostMapping("")
-    public ResponseEntity<CategoriaResponse> create(@RequestBody EditCategoriaCmd cmd){
+    public ResponseEntity<CategoriaResponse> create(@Valid @RequestBody EditCategoriaCmd cmd){
 
         Categoria nuevaCategoria = categoriaService.save(cmd);
 

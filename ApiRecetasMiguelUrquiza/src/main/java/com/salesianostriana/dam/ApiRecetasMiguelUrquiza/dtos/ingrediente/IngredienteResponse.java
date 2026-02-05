@@ -20,6 +20,7 @@ public record IngredienteResponse(
                 ingrediente.getId(),
                 ingrediente.getNombre(),
                 ingrediente.getIngredientesRecetas().stream().map(IngredienteRecetaResponse::of).toList()
+                //Mejorable usando un dto que solo me devuelva ID, Cantidad, Unidad y Receta.
         );
     }
 }
