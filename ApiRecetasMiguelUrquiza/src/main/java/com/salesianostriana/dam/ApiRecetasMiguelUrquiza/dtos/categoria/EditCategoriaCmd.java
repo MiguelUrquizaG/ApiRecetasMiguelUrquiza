@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public record EditCategoriaCmd(
 
-         @Schema(description = "Nombre de la categoría",example = "Cocina Francesa") @NotBlank(message = "No puedes estar vacío") String nombre,
+         @Schema(description = "Nombre de la categoría",example = "Cocina Francesa") @NotBlank(message = "{editCategoriaCmd.nombre.notblank}") String nombre,
          @Schema(description = "Descripción de la categoría.",example = "Es un estilo muy raro.")@NotBlank String descripcion
 
 ) {
